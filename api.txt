@@ -1,0 +1,4 @@
+api = 3feb0265-a209-4dce-b12d-60057b3881e6
+device id = BOLT1116905
+
+https://docs.boltiot.com/docs/introduction
