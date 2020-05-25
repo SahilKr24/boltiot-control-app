@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:home_automation/components/icon_content.dart';
 import 'package:home_automation/components/reuseable_card.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_automation/components/networking.dart' as networking;
+import 'package:flushbar/flushbar.dart';
 
 class Controls extends StatefulWidget {
   static const String id = 'controls';
@@ -14,31 +14,73 @@ class Controls extends StatefulWidget {
 
 class _ControlsState extends State<Controls> {
 
-  List<bool> active = [false,false,false,false,false,false];
+  List<bool> active = [false,false,false,false,false,false,false];
 
-  toggleActive(int index){
-    networking.getData(index, active[index] ? "LOW" : "HIGH");
-    setState(() {
-      active[index] = !active[index];
-    });
+  showError(var res){
+    Flushbar(
+      blockBackgroundInteraction: true,
+      title:"Some Error Occured!",
+      message:res['value'],
+        icon: Icon(FontAwesomeIcons.exclamationTriangle, color: Colors.red),
+      duration:Duration(seconds: 3),              
+    )..show(context);
   }
 
-  bool firstrun;
-  String apikey;
-  String deviceid;
-  fetch() async {
-    final SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    apikey = myPrefs.getString('apikey');
-    deviceid = myPrefs.getString('deviceid');
-    firstrun = myPrefs.getBool('firstrun');
-    //print(firstrun);
-    print(apikey);
-    print(deviceid);
+  toggleActive(int index) async {
+    var res = await networking.getData(index, active[index] ? "LOW" : "HIGH");
+      if(res['success']==1){
+        setState(() {
+        active[index] = !active[index];
+        active[5]=false;active[6]=false;
+      });
+    }
+    else{
+      showError(res);
+    }
+    
   }
+  toggleScene(int index) async {
+    if(index == 0){
+     var res = await networking.getMultiData('1,2,3,4','LOW,HIGH,LOW,LOW');
+     if(res['success']==1){
+       setState(() {
+        active[1]=false;active[2]=true;active[3]=false;active[4]=false;active[5]=false;active[6]=true;
+      });
+     }
+     else{
+      showError(res);
+     } 
+    }
+    if(index == 1){
+      var res = await networking.getMultiData('1,2,3,4','HIGH,LOW,HIGH,LOW');
+      if(res['success']==1){
+      setState(() {
+        active[1]=true;active[2]=false;active[3]=true;active[4]=false;active[5]=true;active[6]=false;
+      }); 
+      }
+      else{
+      showError(res);
+    }
+    }
+    
+  }
+
+  killAll() async {
+     var res = await networking.getMultiData('1,2,3,4','LOW,LOW,LOW,LOW');
+      if(res ==1){
+        setState(() {
+        active[1]=false;active[2]=false;active[3]=false;active[4]=false;active[5]=false;active[6]=false;
+      }); 
+    }
+    else{
+      showError(res);
+    }  
+  }
+
   @override
   void initState() {
+    networking.fetch();
     super.initState();
-    fetch();
   }
   @override
   Widget build(BuildContext context) {
@@ -73,25 +115,25 @@ class _ControlsState extends State<Controls> {
                 child: Row(children: <Widget>[
                   Expanded(
                     child: ReuseableCard(
-                    colour: active[0] ? Colors.lightBlue: Colors.blueGrey,
+                    colour: active[1] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.solidLightbulb,
                       text: 'Tubelight',
                     ),
                     onPress: () {
-                        toggleActive(0);
+                        toggleActive(1);
                     },
                   )),
                   Expanded(
                       child: ReuseableCard(
-                    colour: active[1] ? Colors.lightBlue: Colors.blueGrey,
+                    colour: active[2] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.lightbulb,
                       text: 'Lamp',
                     ),
                     onPress: () {
                       //card tap action
-                      toggleActive(1);
+                      toggleActive(2);
                     },
                     )
                   ),
@@ -103,26 +145,26 @@ class _ControlsState extends State<Controls> {
                 child: Row(children: <Widget>[
                   Expanded(
                     child: ReuseableCard(
-                    colour: active[2] ? Colors.lightBlue: Colors.blueGrey,
+                    colour: active[3] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.fan,
                       text: 'Fan - Coffee Table',
                     ),
                     onPress: () {
                       //card tap action
-                      toggleActive(2);
+                      toggleActive(3);
                     },
                   )),
                   Expanded(
                       child: ReuseableCard(
-                    colour: active[3] ? Colors.lightBlue: Colors.blueGrey,
+                    colour: active[4] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.fan,
                       text: 'Fan - Dining Table',
                     ),
                     onPress: () {
                       //card tap action
-                      toggleActive(3);
+                      toggleActive(4);
                     },
                     )
                   ),
@@ -155,26 +197,26 @@ class _ControlsState extends State<Controls> {
                 child: Row(children: <Widget>[
                   Expanded(
                     child: ReuseableCard(
-                    colour: active[4] ? Colors.lightBlue: Colors.blueGrey,
+                    colour: active[5] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.film,
                       text: 'Movie',
                     ),
                     onPress: () {
                       //card tap action
-                      toggleActive(4);
+                      toggleScene(1);
                     },
                   )),
                   Expanded(
                       child: ReuseableCard(
-                    colour: active[5] ? Colors.lightBlue: Colors.blueGrey,
+                    colour: active[6] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.moon,
                       text: 'Night Light',
                     ),
                     onPress: () {
                       //card tap action
-                      toggleActive(5);
+                      toggleScene(0);
                     },
                     )
                   ),
@@ -185,7 +227,7 @@ class _ControlsState extends State<Controls> {
                 flex:2,
                   child: BottomButton(
                   () {
-                  // Bottom Button Code
+                  killAll();
                   },
                  'Turn Off Everything!'),
               )
