@@ -1,9 +1,28 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'screens/controls.dart';
 import 'screens/credentials.dart';
 import 'screens/controls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-void main() => runApp(Automation());
+
+import 'screens/credentials.dart';
+
+
+String initRoute;
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(await getState());
+}
+
+bool firstrun;
+Future<Widget> getState() async {
+  final sharedPrefs = await SharedPreferences.getInstance();
+  firstrun = sharedPrefs.getBool('firstrun') ?? true;
+  print("Firstrun?");
+  print(firstrun);
+  initRoute = firstrun ? Credentials.id : Controls.id;
+  return Automation();
+}
 
 class Automation extends StatefulWidget {
   @override
@@ -11,13 +30,11 @@ class Automation extends StatefulWidget {
 }
 
 class _AutomationState extends State<Automation> {
-
-  bool firstrun;
-   getState() async{
-    final sharedPrefs = await SharedPreferences.getInstance();
-    firstrun = sharedPrefs.getBool('firstrun') ?? true ;
+  @override
+  void initState() {
+    getState();
+    super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +43,11 @@ class _AutomationState extends State<Automation> {
         primaryColor: Color(0xFF0A0E21),
         scaffoldBackgroundColor: Color(0xFF0A0E21),
       ),
-      initialRoute:Controls.id,
+      initialRoute: initRoute,
       routes: {
-        Credentials.id:(context)=> Credentials(),
-        Controls.id:(context)=> Controls(),
+        Credentials.id: (context) => Credentials(),
+        Controls.id: (context) => Controls(),
       },
     );
   }
 }
-
-
- 
