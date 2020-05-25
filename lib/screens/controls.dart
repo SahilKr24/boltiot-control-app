@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:home_automation/components/icon_content.dart';
 import 'package:home_automation/components/reuseable_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:home_automation/components/networking.dart';
+import 'package:home_automation/components/networking.dart' as networking;
 
 class Controls extends StatefulWidget {
   static const String id = 'controls';
@@ -13,6 +13,15 @@ class Controls extends StatefulWidget {
 }
 
 class _ControlsState extends State<Controls> {
+
+  List<bool> active = [false,false,false,false,false,false];
+
+  toggleActive(int index){
+    networking.getData(index, active[index] ? "LOW" : "HIGH");
+    setState(() {
+      active[index] = !active[index];
+    });
+  }
 
   bool firstrun;
   String apikey;
@@ -64,24 +73,25 @@ class _ControlsState extends State<Controls> {
                 child: Row(children: <Widget>[
                   Expanded(
                     child: ReuseableCard(
-                    colour: Colors.lightBlue,
+                    colour: active[0] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.solidLightbulb,
                       text: 'Tubelight',
                     ),
                     onPress: () {
-                        
+                        toggleActive(0);
                     },
                   )),
                   Expanded(
                       child: ReuseableCard(
-                    colour: Colors.lightBlue,
+                    colour: active[1] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.lightbulb,
                       text: 'Lamp',
                     ),
                     onPress: () {
                       //card tap action
+                      toggleActive(1);
                     },
                     )
                   ),
@@ -93,24 +103,26 @@ class _ControlsState extends State<Controls> {
                 child: Row(children: <Widget>[
                   Expanded(
                     child: ReuseableCard(
-                    colour: Colors.blueGrey,
+                    colour: active[2] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.fan,
                       text: 'Fan - Coffee Table',
                     ),
                     onPress: () {
                       //card tap action
+                      toggleActive(2);
                     },
                   )),
                   Expanded(
                       child: ReuseableCard(
-                    colour: Colors.blueGrey,
+                    colour: active[3] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.fan,
                       text: 'Fan - Dining Table',
                     ),
                     onPress: () {
                       //card tap action
+                      toggleActive(3);
                     },
                     )
                   ),
@@ -143,24 +155,26 @@ class _ControlsState extends State<Controls> {
                 child: Row(children: <Widget>[
                   Expanded(
                     child: ReuseableCard(
-                    colour: Colors.blueGrey,
+                    colour: active[4] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.film,
                       text: 'Movie',
                     ),
                     onPress: () {
                       //card tap action
+                      toggleActive(4);
                     },
                   )),
                   Expanded(
                       child: ReuseableCard(
-                    colour: Colors.blueGrey,
+                    colour: active[5] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.moon,
                       text: 'Night Light',
                     ),
                     onPress: () {
                       //card tap action
+                      toggleActive(5);
                     },
                     )
                   ),
