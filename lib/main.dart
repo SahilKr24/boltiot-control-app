@@ -15,8 +15,8 @@ bool firstrun;
 Future<Widget> getState() async {
   final sharedPrefs = await SharedPreferences.getInstance();
   firstrun = sharedPrefs.getBool('firstrun') ?? true;
-  print("Firstrun?");
-  print(firstrun);
+  // print("Firstrun?");
+  // print(firstrun);
   initRoute = firstrun ? Credentials.id : Controls.id;
   return Automation();
 }

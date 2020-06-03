@@ -27,7 +27,7 @@ class _ControlsState extends State<Controls> {
   }
 
   toggleActive(int index) async {
-    var res = await networking.getData(index, active[index] ? "LOW" : "HIGH");
+    var res = await networking.getData(index, active[index] ? "HIGH" : "LOW");
       if(res['success']==1){
         setState(() {
         active[index] = !active[index];
@@ -41,7 +41,7 @@ class _ControlsState extends State<Controls> {
   }
   toggleScene(int index) async {
     if(index == 0){
-     var res = await networking.getMultiData('1,2,3,4','LOW,HIGH,LOW,LOW');
+     var res = await networking.getMultiData('1,2,3,4','HIGH,LOW,HIGH,HIGH');
      if(res['success']==1){
        setState(() {
         active[1]=false;active[2]=true;active[3]=false;active[4]=false;active[5]=false;active[6]=true;
@@ -52,10 +52,10 @@ class _ControlsState extends State<Controls> {
      } 
     }
     if(index == 1){
-      var res = await networking.getMultiData('1,2,3,4','HIGH,LOW,HIGH,LOW');
+      var res = await networking.getMultiData('1,2,3,4','HIGH,LOW,LOW,HIGH');
       if(res['success']==1){
       setState(() {
-        active[1]=true;active[2]=false;active[3]=true;active[4]=false;active[5]=true;active[6]=false;
+        active[1]=false;active[2]=true;active[3]=true;active[4]=false;active[5]=true;active[6]=false;
       }); 
       }
       else{
@@ -66,8 +66,8 @@ class _ControlsState extends State<Controls> {
   }
 
   killAll() async {
-     var res = await networking.getMultiData('1,2,3,4','LOW,LOW,LOW,LOW');
-      if(res ==1){
+     var res = await networking.getMultiData('1,2,3,4','HIGH,HIGH,HIGH,HIGH');
+      if(res['success']==1){
         setState(() {
         active[1]=false;active[2]=false;active[3]=false;active[4]=false;active[5]=false;active[6]=false;
       }); 
@@ -118,7 +118,7 @@ class _ControlsState extends State<Controls> {
                     colour: active[1] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.solidLightbulb,
-                      text: 'Tubelight',
+                      text: 'Porch Lights',
                     ),
                     onPress: () {
                         toggleActive(1);
@@ -129,7 +129,7 @@ class _ControlsState extends State<Controls> {
                     colour: active[2] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.lightbulb,
-                      text: 'Lamp',
+                      text: 'LED Light',
                     ),
                     onPress: () {
                       //card tap action
@@ -148,7 +148,7 @@ class _ControlsState extends State<Controls> {
                     colour: active[3] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.fan,
-                      text: 'Fan - Coffee Table',
+                      text: 'Fan',
                     ),
                     onPress: () {
                       //card tap action
@@ -159,8 +159,8 @@ class _ControlsState extends State<Controls> {
                       child: ReuseableCard(
                     colour: active[4] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
-                      icon: FontAwesomeIcons.fan,
-                      text: 'Fan - Dining Table',
+                      icon: FontAwesomeIcons.lightbulb,
+                      text: 'Tubelight',
                     ),
                     onPress: () {
                       //card tap action
@@ -200,7 +200,7 @@ class _ControlsState extends State<Controls> {
                     colour: active[5] ? Colors.lightBlue: Colors.blueGrey,
                     cardChild: Icon_Data(
                       icon: FontAwesomeIcons.film,
-                      text: 'Movie',
+                      text: 'Veranda',
                     ),
                     onPress: () {
                       //card tap action
