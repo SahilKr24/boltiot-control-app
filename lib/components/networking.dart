@@ -15,12 +15,18 @@ fetch() async {
   // print(deviceid);
 }
 
+Future getStatus() async {
+  http.Response response =
+      await http.get("http://192.168.0.107:3000/pinStatus");
+  return jsonDecode(response.body);
+}
+
 Future getData(int pin, String state) async {
   final String baseUrl =
       "https://cloud.boltiot.com/remote/${apikey}/digitalWrite?pin=${pin}&state=${state}&deviceName=${deviceid}";
   //print(baseUrl);
   http.Response response = await http.post(
-    "http://192.168.0.107:3000/setPins",
+    "http://192.168.0.107:3000/setPin",
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

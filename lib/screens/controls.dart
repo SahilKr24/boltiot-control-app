@@ -93,9 +93,22 @@ class _ControlsState extends State<Controls> {
     }
   }
 
+  getStatus() async {
+    var response = await networking.getStatus();
+    print(response);
+    var resActive = response;
+    setState(() {
+      int i = 0;
+      resActive.forEach((element) {
+        active[i++] = (element == 'LOW' ? true : false);
+      });
+    });
+  }
+
   @override
   void initState() {
     networking.fetch();
+    getStatus();
     super.initState();
   }
 
