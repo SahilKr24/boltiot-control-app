@@ -16,8 +16,7 @@ fetch() async {
 }
 
 Future getStatus() async {
-  http.Response response =
-      await http.get("http://192.168.0.107:3000/pinStatus");
+  http.Response response = await http.get("http://52.45.45.130:3008/pinStatus");
   return jsonDecode(response.body);
 }
 
@@ -26,7 +25,7 @@ Future getData(int pin, String state) async {
       "https://cloud.boltiot.com/remote/${apikey}/digitalWrite?pin=${pin}&state=${state}&deviceName=${deviceid}";
   //print(baseUrl);
   http.Response response = await http.post(
-    "http://192.168.0.107:3000/setPin",
+    "http://52.45.45.130:3008/setPin",
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -49,11 +48,11 @@ Future getMultiData(String pins, String states) async {
   //print(baseUrl);
   http.Response response = await http
       .post(
-        "http://192.168.0.107:3000/setPins",
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{"pins": pins, "states": states}),
+    "http://52.45.45.130:3008/setPins",
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{"pins": pins, "states": states}),
       )
       .timeout(
         Duration(seconds: 30),
