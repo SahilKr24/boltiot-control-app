@@ -15,14 +15,14 @@ class Credentials extends StatefulWidget {
 class _CredentialsState extends State<Credentials> {
 
   bool showSpinner = false;
-  String apikey;
-  String deviceid;
+  String server_url;
+  String server_port;
 
   save() async {
      final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
      sharedPrefs.setBool('firstrun', false);
-     sharedPrefs.setString('apikey', apikey);
-     sharedPrefs.setString('deviceid', deviceid);
+     sharedPrefs.setString('server_url', server_url);
+     sharedPrefs.setString('server_port', server_port);
   }
 
   @override
@@ -52,10 +52,10 @@ class _CredentialsState extends State<Credentials> {
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
-                        apikey = value;
+                        server_url = value;
                       },
                       decoration: kInputDecoration.copyWith(
-                        hintText:'Enter Your API Key',
+                        hintText:'Enter Your Server URL',
                       ),
                     ),
                     SizedBox(
@@ -65,10 +65,10 @@ class _CredentialsState extends State<Credentials> {
                       obscureText: true,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
-                        deviceid = value;
+                        server_port = value;
                       },
                       decoration: kInputDecoration.copyWith(
-                        hintText:'Enter Your DeviceID',
+                        hintText:'Enter Your Server Port',
                       ),
                     ),
                     SizedBox(
