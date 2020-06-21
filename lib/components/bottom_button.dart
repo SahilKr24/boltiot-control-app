@@ -24,7 +24,7 @@ class BottomButton extends StatelessWidget {
         color: bottomCardColor,
         margin: EdgeInsets.only(top: 10.0),
         width: double.infinity,
-        height: bottomContainerHeight,
+        // height: bottomContainerHeight,
       ),
     );
   }

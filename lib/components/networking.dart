@@ -11,10 +11,11 @@ fetch() async {
   final SharedPreferences myPrefs = await SharedPreferences.getInstance();
   server_url = myPrefs.getString('server_url');
   server_port = myPrefs.getString('server_port');
+  return true;
 }
 
 Future getStatus() async {
-  http.Response response = await http.get("http://${server_url}:${server_port}/pinStatus");
+  http.Response response = await http.get("http://$server_url:$server_port/pinStatus");
   return jsonDecode(response.body);
 }
 
@@ -49,8 +50,6 @@ Future getMultiData(String pins, String states) async {
       .timeout(
         Duration(seconds: 30),
       );
-
-  print(response.body);
   if (response.statusCode == 200) {
     String data = response.body;
     var decodedData = jsonDecode(data);

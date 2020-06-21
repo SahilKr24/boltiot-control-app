@@ -119,7 +119,6 @@ class _ControlsState extends State<Controls> {
       showSpinner = true;
     });
     var response = await networking.getStatus();
-    print(response);
     var resActive = response;
     setState(() {
       int i = 0;
@@ -130,10 +129,16 @@ class _ControlsState extends State<Controls> {
     });
   }
 
+  fetch() async{
+    await networking.fetch();
+    await getStatus();
+    setState(() {
+      
+    });
+  }
   @override
   void initState() {
-    networking.fetch();
-    // getStatus();
+    fetch();
     super.initState();
   }
 
